@@ -17,6 +17,8 @@
 
 #include <Wire.h>
 #include <SPI.h>
+#include <Adafruit_Sensor.h>
+#include <Adafruit_BMP280.h>
 #include <dht.h>
 
 dht DHT;
@@ -26,38 +28,38 @@ dht DHT;
 #define BMP_MOSI 11 
 #define BMP_CS 10
 #define DHT11_PIN 7
-#define DEVICE_ID "air-2"
 
+Adafruit_BMP280 bme; // I2C
 //Adafruit_BMP280 bme(BMP_CS); // hardware SPI
 //Adafruit_BMP280 bme(BMP_CS, BMP_MOSI, BMP_MISO,  BMP_SCK);
-
-
+  
 void setup() {
   Serial.begin(9600);
-  while(!Serial){;}
+  Serial.println(F("BMP280 test"));
   
-  Serial.println(F("Sensors Initializing"));
-  
-
-}
-void loop() {
-  int comd = 0;
-  while(Serial.available() > 0){
-    comd = Serial.read();
-    Serial.write(comd);
+  if (!bme.begin(0x76)) {  
+    Serial.println("Could not find a valid BMP280 sensor, check wiring!");
+    while (1);
   }
-  switch (comd){
-    case 10:
+}
+  
+void loop() {
     int chk = DHT.read11(DHT11_PIN);
-    Serial.print("Device_ID ");
-    Serial.print(DEVICE_ID);
-    Serial.print(" Temperature ");
-    //Serial.print(bme.readTemperature()-1.2);    
+    Serial.print("Temperature = ");
+    Serial.print(bme.readTemperature()-1.2);
+    Serial.println(" *C");
+    
+    Serial.print("Pressure = ");
+    Serial.print(bme.readPressure()/100);
+    Serial.println(" kPa");
 
-    Serial.print(" Humidity ");
+    Serial.print("Approx altitude = ");
+    Serial.print(bme.readAltitude(1013.25)); // this should be adjusted to your local forcase
+    Serial.println(" m");
+
+    Serial.print("Humidity = ");
     Serial.println(DHT.humidity);
     
-      break;
-  }
-  delay(200);
+    Serial.println();
+    delay(2000);
 }

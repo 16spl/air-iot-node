@@ -1,34 +1,18 @@
-/***************************************************************************
-  This is a library for the BMP280 humidity, temperature & pressure sensor
-
-  Designed specifically to work with the Adafruit BMEP280 Breakout 
-  ----> http://www.adafruit.com/products/2651
-
-  These sensors use I2C or SPI to communicate, 2 or 4 pins are required 
-  to interface.
-
-  Adafruit invests time and resources providing this open source code,
-  please support Adafruit andopen-source hardware by purchasing products
-  from Adafruit!
-
-  Written by Limor Fried & Kevin Townsend for Adafruit Industries.  
-  BSD license, all text above must be included in any redistribution
- ***************************************************************************/
 
 #include <Wire.h>
 #include <SPI.h>
 #include <dht.h>
 #include <OneWire.h>
 #include <EEPROM.h>
-
+#include "MQ135.h"
 
 dht DHT;
 
 #define DHT11_PIN 7
 #define DEVICE_ID "air-3" //TODO Generate automatically or load from EEPROM
+#define RZERO 75518 //Tää arvo pitää kalibroida tasasesta arvosta
 
-//Adafruit_BMP280 bme(BMP_CS); // hardware SPI
-//Adafruit_BMP280 bme(BMP_CS, BMP_MOSI, BMP_MISO,  BMP_SCK);
+MQ135 mq135(0, 9600); //Pinninumero ja sit vastuksen arvo. Hellpppooo
 OneWire ds(4);
 byte addr[8];
 char sID[9];
@@ -108,29 +92,36 @@ void setup() {
   Serial.print("Arduino ID:");
   Serial.println(sID);
   Serial.println("Sensors Initializing");
+  Serial.println(DHT.read11(DHT11_PIN));
   delay(20);
   tempSearch();
   delay(20);
   Serial.println("Done"); //!IMPORTANT! Python script detects this and starts to send data
 
 }
+int comd = 0;
 void loop() {
-  int comd = 0;
   while(Serial.available() > 0){
     comd = Serial.read();
     Serial.write(comd);
   }
+  if(comd == 10){
+    Serial.print("toimii");
+  }
+  /*
   switch (comd){
     case 10:
-    int chk = DHT.read11(DHT11_PIN);
+    //int chk = DHT.read11(DHT11_PIN);
     Serial.print("Device_ID ");
     Serial.print(DEVICE_ID);
     Serial.print(" Temperature ");
     Serial.print(readTemp()); //readTemp lukee lämmön, tais palauttaa floatin
     Serial.print(" Humidity ");
-    Serial.println(DHT.humidity);
+    //Serial.print(DHT.humidity);
+    Serial.print(" CO2 ");
+    //Serial.println(mq135.getPPM());
     
       break;
-  }
+  }*/
   delay(200);
 }

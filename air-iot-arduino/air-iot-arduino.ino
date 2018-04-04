@@ -99,8 +99,9 @@ void setup() {
   Serial.println("Done"); //!IMPORTANT! Python script detects this and starts to send data
 
 }
-int comd = 0;
+
 void loop() {
+  int comd = 0;
   while(Serial.available() > 0){
     comd = Serial.read();
     Serial.write(comd);
@@ -108,7 +109,7 @@ void loop() {
   if(comd == 10){
     Serial.print("toimii");
   }
-  /*
+ 
   switch (comd){
     case 10:
     //int chk = DHT.read11(DHT11_PIN);
@@ -122,6 +123,6 @@ void loop() {
     //Serial.println(mq135.getPPM());
     
       break;
-  }*/
+  }
   delay(200);
 }

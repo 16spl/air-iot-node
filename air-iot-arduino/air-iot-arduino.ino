@@ -10,9 +10,9 @@ dht DHT;
 
 #define DHT11_PIN 7
 #define DEVICE_ID "air-3" //TODO Generate automatically or load from EEPROM
-#define RZERO 75518 //Tää arvo pitää kalibroida tasasesta arvosta
+#define CO2LOAD 9950
+MQ135 mq135(0, CO2LOAD); //Pinninumero ja sit vastuksen arvo. Hellpppooo
 
-MQ135 mq135(0, 9600); //Pinninumero ja sit vastuksen arvo. Hellpppooo
 OneWire ds(4);
 byte addr[8];
 char sID[9];
@@ -101,28 +101,16 @@ void setup() {
 }
 
 void loop() {
-  int comd = 0;
-  while(Serial.available() > 0){
-    comd = Serial.read();
-    Serial.write(comd);
-  }
-  if(comd == 10){
-    Serial.print("toimii");
-  }
- 
-  switch (comd){
-    case 10:
-    //int chk = DHT.read11(DHT11_PIN);
-    Serial.print("Device_ID ");
-    Serial.print(DEVICE_ID);
-    Serial.print(" Temperature ");
-    Serial.print(readTemp()); //readTemp lukee lämmön, tais palauttaa floatin
-    Serial.print(" Humidity ");
-    //Serial.print(DHT.humidity);
-    Serial.print(" CO2 ");
-    //Serial.println(mq135.getPPM());
+
+
+   Serial.print("Device_ID ");
+   Serial.print(DEVICE_ID);
+   Serial.print(" Temperature ");
+   Serial.print(readTemp()); //readTemp lukee lämmön, tais palauttaa floatin
+   Serial.print(" Humidity ");
+   Serial.print(DHT.humidity);
+   Serial.print(" CO2 ");
+   Serial.print(mq135.getPPM());
     
-      break;
-  }
-  delay(200);
+  delay(30000);
 }

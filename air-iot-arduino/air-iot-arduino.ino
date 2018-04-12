@@ -120,18 +120,6 @@ void setup() {
 
 void loop() {
   Serial.println(dataOut());
-
-/*
-   Serial.print("Device_ID ");
-   Serial.print(DEVICE_ID);
-   Serial.print(" Temperature ");
-   Serial.print(readTemp()); //readTemp lukee lämmön, tais palauttaa floatin
-   Serial.print(" Humidity ");
-   Serial.print(DHT.humidity);
-   Serial.print(" CO2 ");
-   Serial.print(mq135.getPPM());
-   Serial.print(" light ");
-   Serial.println(ldr.getLux());*/
     
-  delay(4000);
+  delay(40000);
 }

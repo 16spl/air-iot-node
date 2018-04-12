@@ -17,6 +17,6 @@ float MQ135::getRZero(){
 }
 
 int MQ135::getPPM(){
-  return (PARA * pow(getResistance()/RZERO, -PARB));
+  return (int)(PARA * pow(getResistance()/RZERO, -PARB));
 }
 

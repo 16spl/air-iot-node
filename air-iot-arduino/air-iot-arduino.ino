@@ -5,13 +5,17 @@
 #include <OneWire.h>
 #include <EEPROM.h>
 #include "MQ135.h"
+#include "LDR_lux.h"
+
 
 dht DHT;
 
 #define DHT11_PIN 7
 #define DEVICE_ID "air-3" //TODO Generate automatically or load from EEPROM
 #define CO2LOAD 9950
+
 MQ135 mq135(0, CO2LOAD); //Pinninumero ja sit vastuksen arvo. Hellpppooo
+LDR ldr(1); 
 
 OneWire ds(4);
 byte addr[8];
@@ -111,6 +115,8 @@ void loop() {
    Serial.print(DHT.humidity);
    Serial.print(" CO2 ");
    Serial.print(mq135.getPPM());
+   Serial.print(" light ");
+   Serial.println(ldr.getLux());
     
-  delay(30000);
+  delay(40000);
 }

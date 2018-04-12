@@ -20,6 +20,7 @@ LDR ldr(1);
 OneWire ds(4);
 byte addr[8];
 char sID[9];
+char outBuf[120];
 
 void tempSearch(){
   byte i;
@@ -87,6 +88,19 @@ float readTemp() { //TODO: tämä syö addressin ja hakee sen perusteella lämp�
   return (float)raw / 16.0;
 }
 
+char * dataOut(){
+  char str_temp[6], str_hum[5];
+  
+  dtostrf(readTemp(), 4, 2, str_temp);
+  dtostrf(DHT.humidity, 4, 2, str_hum);
+  sprintf(outBuf, "Device_ID %s Temperature %s Humidity %s CO2 %d light %d",DEVICE_ID, 
+                                                                            str_temp, 
+                                                                            str_hum, 
+                                                                            mq135.getPPM(), 
+                                                                            ldr.getLux());
+  return outBuf;
+}
+
 void setup() {
   Serial.begin(9600);
   while(!Serial){;}
@@ -105,8 +119,9 @@ void setup() {
 }
 
 void loop() {
+  Serial.println(dataOut());
 
-
+/*
    Serial.print("Device_ID ");
    Serial.print(DEVICE_ID);
    Serial.print(" Temperature ");
@@ -116,7 +131,7 @@ void loop() {
    Serial.print(" CO2 ");
    Serial.print(mq135.getPPM());
    Serial.print(" light ");
-   Serial.println(ldr.getLux());
+   Serial.println(ldr.getLux());*/
     
-  delay(40000);
+  delay(4000);
 }

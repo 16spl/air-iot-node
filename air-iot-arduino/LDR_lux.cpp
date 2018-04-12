@@ -15,7 +15,7 @@ float LDR::LDRResistance(){
   return (5-resVolt) / resVolt * RESISTANCE;
 }
 
-float LDR::getLux(){
-  return (1.25*pow(10, LUX_INTERSECT)) * pow(LDRResistance(), LUX_SLOPE);
+int LDR::getLux(){
+  return (int)((1.25*pow(10, LUX_INTERSECT)) * pow(LDRResistance(), LUX_SLOPE));
 }
 

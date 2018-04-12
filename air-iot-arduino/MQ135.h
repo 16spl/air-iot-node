@@ -29,6 +29,6 @@ class MQ135 {
     MQ135(uint8_t pin, uint16_t RLOAD);
     float getResistance();
     float getRZero();
-    float getPPM();
+    int getPPM();
 };
 #endif

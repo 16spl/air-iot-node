@@ -12,7 +12,7 @@ class LDR {
   public:
     LDR(uint8_t pin);
     float LDRResistance();
-    float getLux();
+    int getLux();
     float LDRResVoltage();
    
 };
